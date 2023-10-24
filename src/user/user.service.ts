@@ -39,7 +39,8 @@ export class UserService {
             typeof emailUser !== 'string' ||
             idUser === '' ||
             nameUser === '' ||
-            phoneUser === ''
+            phoneUser === '' ||
+            this.isUser(newUser.idUser)
         ){
                 return {
                     isSuccess: false,
@@ -57,7 +58,7 @@ export class UserService {
     getUserList():UserListResponse {
 
 
-        // listaUserowWSerwisie = lista;
+
         return this.userService;
     }
 
@@ -96,5 +97,6 @@ export class UserService {
 
     // sprawdzanie czy jest produkt o danym id / nazwie w wypożyczalni
 
+    user_dane
 
 }

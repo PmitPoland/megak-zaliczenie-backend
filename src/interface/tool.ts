@@ -13,6 +13,12 @@ export type ToolType = {
     availabulityTool: true,
 }
 
+export type ListToolResponse = ToolType[];
+
 export type RemoveToolResponse = {
     isSuccess: boolean,
 } // czy usunieto narzędzie z listy / - mogło go np: nie być
+
+export type GetCautionResponse = number | {
+    isSuccess: false;
+}

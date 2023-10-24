@@ -6,10 +6,15 @@ export class ToolEntity extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     idTool: string ;
 
-    @Column()
+    @Column({
+        length: 100,
+    })
     nameTool: string;
 
-    @Column()
+    @Column({
+        type: 'int',
+        precision: 6,
+    })
     depositTool: number;
 
     @Column()

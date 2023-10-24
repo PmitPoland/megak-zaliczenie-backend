@@ -1,6 +1,6 @@
 import {Body, Controller, Delete, forwardRef, Get, Inject, Param, Post} from '@nestjs/common';
 import {ToolService} from "./tool.service";
-import {AddToolToBase, RemoveToolResponse} from "../interface/tool";
+import {AddToolToBase, GetCautionResponse, ListToolResponse, RemoveToolResponse} from "../interface/tool";
 
 
 // Controler powinien tylko przyjmować dane i odsyłać ,obsługą tych danych powinne zajmować się servisy
@@ -27,9 +27,9 @@ export class ToolController {
     }
 
     @Get('/list')
-    listTool() {
+    listTool(): ListToolResponse {
         console.log('Cała tablica',this.toolService);
-        return this.toolService;
+        return this.toolService.getToolList();
     }
 
     @Delete ('/delete/:index')
@@ -39,4 +39,10 @@ export class ToolController {
         return this.toolService.removeTool(Number(index));
     }
 
+    @Get('/caution/:idtool')
+    getCaution(
+        @Param('idtool') idToolToAsk: string,
+    ): GetCautionResponse{
+        return this.toolService.getCautionOfProduct(idToolToAsk)
+    }
 }

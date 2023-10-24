@@ -3,6 +3,10 @@ import {NewRentDto} from "./dto/new-rent.dto";
 import {AddRentToolToBase1Response, RemoveWypozyczenieResponse} from "../interface/rent";
 import {UserService} from "../user/user.service";
 import {ToolService} from "../tool/tool.service";
+import {InjectRepository} from "@nestjs/typeorm";
+import {UserEntity} from "../user/user.entity";
+import {Repository} from "typeorm";
+import {RentEntity} from "./rent.entity";
 
 @Injectable()
 export class RentService {
@@ -10,7 +14,8 @@ export class RentService {
 
     constructor(
         @Inject(forwardRef(() => UserService)) private userService: UserService,
-        @Inject(forwardRef(() => ToolService)) private toolService: ToolService
+        @Inject(forwardRef(() => ToolService)) private toolService: ToolService,
+        @InjectRepository(RentEntity) private rentEntityRepository: Repository<RentEntity>,
     ) {
     }
 

@@ -1,14 +1,20 @@
 import {forwardRef, Inject, Injectable} from '@nestjs/common';
-import {RemoveToolResponse, ToolType} from "../interface/tool";
+import {GetCautionResponse, ListToolResponse, RemoveToolResponse, ToolType} from "../interface/tool";
 import {RentService} from "../rent/rent.service";
+import {InjectRepository} from "@nestjs/typeorm";
+import {UserEntity} from "../user/user.entity";
+import {Repository} from "typeorm";
+import {ToolEntity} from "./tool.entity";
 
 
 @Injectable()
 export class ToolService {
     private toolList: ToolType[] = [];
 
+
     constructor(
         @Inject(forwardRef(() => RentService)) private rentService: RentService,
+        @InjectRepository(ToolEntity) private toolEntityRepository: Repository<ToolEntity>,
     ) {
     }
 
@@ -22,7 +28,8 @@ export class ToolService {
             typeof newTool.idTool !== 'string' ||
             newTool.nameTool === '' ||
             newTool.idTool === '' ||
-            newTool.depositTool < 0
+            newTool.depositTool < 0 ||
+            this.isTool(newTool.idTool)
         ) {
 
             return {
@@ -59,4 +66,29 @@ export class ToolService {
             isSuccess: true,
         }
     }
+
+    getToolList():ListToolResponse{
+        return this.toolList;
+    }
+
+    isTool (idToolFind: string): boolean {
+        return this.toolList.some(item => item.idTool === idToolFind);
+    }
+
+    getCautionOfProduct (idToolToAsk: string): GetCautionResponse {
+
+        console.log("this.toolList", this.toolList);
+        console.log('Idtoask', idToolToAsk);
+        console.log('this.isTool', this.isTool(idToolToAsk));
+        if (!this.toolList.every(item => this.isTool(idToolToAsk))) {
+            console.log('Coś poszło nie tak, zwracam false');
+            return {
+                isSuccess:false,
+            }
+        }
+        console.log('Jak false nie powinno być')
+        return this.toolList.find(item => item.idTool === idToolToAsk).depositTool;
+    }
+
+
 }

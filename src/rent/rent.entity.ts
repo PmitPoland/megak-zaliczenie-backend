@@ -4,8 +4,8 @@ import {UserEntity} from "../user/user.entity";
 @Entity()
 export class RentEntity extends BaseEntity {
 
-    @PrimaryGeneratedColumn()
-    idRent: number;
+    @PrimaryGeneratedColumn('uuid')
+    idRent: string;
 
     // @ManyToOne(() => UserEntity, klient => klient.wypozyczenia)
     // @JoinColumn({ name: 'klientId' })
@@ -15,19 +15,30 @@ export class RentEntity extends BaseEntity {
     // @JoinColumn({ name: 'narzedzieId' })
     // narzedzie: Narzedzie;
 
-    @Column()
+    @Column({
+        default: () => 'CURRENT_TIMESTAMP',
+    })
     dataWypozyczenia: Date;
 
     @Column()
     dataZwrotu: Date;
 
-    @Column()
+    @Column(
+        {
+            type: 'int',
+            precision: 3,
+        }
+    )
     iloscDni: number;
 
     @Column()
     kaucjaZaplacona: boolean;
 
-    @Column()
+    @Column({
+        type: 'float',
+        precision: 10,
+        scale: 2,
+    })
     kwotaDoZaplaty: number;
 
     @Column()
