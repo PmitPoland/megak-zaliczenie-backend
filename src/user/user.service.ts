@@ -1,64 +1,70 @@
-import { Injectable } from '@nestjs/common';
+import {forwardRef, Inject, Injectable} from '@nestjs/common';
 import {
     AddNewUserToBase1Response,
     RegisterUserResponse,
     RemoveUserFromBaseResponse,
     User,
-    UserList
+    UserListResponse
 } from "../interface/user";
 import {InjectRepository} from "@nestjs/typeorm";
 import {UserEntity} from "./user.entity";
-import {Repository} from "typeorm";
+import {Repository, Like} from "typeorm";
 import {CreateUserDto} from "./dto/create-user.dto";
+import {RentService} from "../rent/rent.service";
 
 
 // Service - służy do obsługi zapytań z Controlera. Tutaj ma być cała logika.
 
 @Injectable()       // Injectable czyli można gdzieś go wstrzykiwać
 export class UserService {
-    private userList: UserList[] = [];
+    private userService: CreateUserDto[] = [];
+
+
 
     constructor(
         @InjectRepository(UserEntity) private userEntityRepository: Repository<UserEntity>,
+        @Inject(forwardRef(() => RentService)) private rentService: RentService,
     ) {
     }
 
     addNewUser(newUser): AddNewUserToBase1Response {
 
-        console.log('Nowy user z user.serwis=ce',newUser);
+        const {idUser, nameUser, phoneUser, emailUser} = newUser;
+
+        console.log('Nowy user z user.serwice',newUser);
         if (
-            typeof newUser.idUser !== 'string' ||
-            typeof newUser.nameUser !== 'string' ||
-            typeof newUser.phoneUser !== 'string' ||
-            typeof newUser.emailUser !== 'string' ||
-            newUser.idUser === '' ||
-            newUser.nameUser === '' ||
-            newUser.phoneUser === ''
+            typeof idUser !== 'string' ||
+            typeof nameUser !== 'string' ||
+            typeof phoneUser !== 'string' ||
+            typeof emailUser !== 'string' ||
+            idUser === '' ||
+            nameUser === '' ||
+            phoneUser === ''
         ){
                 return {
                     isSuccess: false,
                 }
         }
 
-        this.userList.push(newUser);
+        this.userService.push(newUser);
         return {
-            index: this.userList.length -1,
+            index: this.userService.length -1,
             isSuccess: true,
         }
     }
 
 
-    getUserList() {
+    getUserList():UserListResponse {
 
 
         // listaUserowWSerwisie = lista;
-        return this.userList;
+        return this.userService;
     }
 
     removeUser(index): RemoveUserFromBaseResponse {
         if (
-            this.userList.length < 0 ||
-            index >= this.userList.length
+            this.userService.length < 0 ||
+            index >= this.userService.length
         ) {
             // console.log('Typeoff Index', typeof (index));
             // console.log('If nie this.Length z remove', this.toolList.length);
@@ -68,10 +74,18 @@ export class UserService {
             }
         }
 
-        this.userList.splice(index, 1);
+        this.userService.splice(index, 1);
         return {
             isSuccess: true,
         }
+    }
+
+     getUserById(idUserToFind: string) {
+         return this.userService.filter(item => item.idUser === idUserToFind)
+    }
+
+    isUser (idUserFind: string): boolean {
+        return this.userService.some(item => item.idUser === idUserFind);
     }
 
 

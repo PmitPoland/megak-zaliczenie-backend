@@ -1,10 +1,13 @@
-export interface User {
-    idUser: string,
-    nameUser: string,
-    phoneUser: string,
-    emailUser: string,    // może nie podawać
+import {CreateUserDto} from "../user/dto/create-user.dto";
+
+export type User = CreateUserDto
+    // {
+    // idUser: string;
+    // nameUser: string;
+    // phoneUser: string;
+    // emailUser: string;    // może nie podawać
     // kara: 'true'|'false',
-}
+// }
 
 export type AddNewUserToBase1Response = {
     isSuccess: true;
@@ -23,9 +26,9 @@ export interface  RegisterUserResponse {
     // te dane zwracam z UserControler podczas rejestracji, Id doda się sam
 }
 
-export type UserList = User[];
+export type UserListResponse = CreateUserDto[];
 
-export type PobierzListeUserowResponse = User[];
+export type PobierzListeUserowResponse = CreateUserDto[];
 
 
 

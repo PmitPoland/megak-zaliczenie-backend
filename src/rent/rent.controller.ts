@@ -25,7 +25,7 @@ export class RentController {
 
         console.log('Index w controller', index);
         console.log('Index w controller', Number(index));
-        return this.rentService.removeWypozyczenie(Number(index))
+        return this.rentService.deleteRent(Number(index))
     }
 
     @Get('/list')

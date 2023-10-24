@@ -1,10 +1,16 @@
-import {Injectable} from '@nestjs/common';
+import {forwardRef, Inject, Injectable} from '@nestjs/common';
 import {RemoveToolResponse, ToolType} from "../interface/tool";
+import {RentService} from "../rent/rent.service";
 
 
 @Injectable()
 export class ToolService {
     private toolList: ToolType[] = [];
+
+    constructor(
+        @Inject(forwardRef(() => RentService)) private rentService: RentService,
+    ) {
+    }
 
     addNewTool(newTool) {
         // this.toolList.push(newTool);
@@ -31,7 +37,6 @@ export class ToolService {
             isSuccess: true,
         }
     }
-
 
     removeTool(index: number): RemoveToolResponse {
 

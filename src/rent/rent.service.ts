@@ -9,8 +9,8 @@ export class RentService {
     private rentUserToolDoController: NewRentDto[] = [];
 
     constructor(
-        //@Inject(forwardRef(() => UserService)) private userService: UserService,
-        @Inject(forwardRef(() =>ToolService)) private toolService: ToolService
+        @Inject(forwardRef(() => UserService)) private userService: UserService,
+        @Inject(forwardRef(() => ToolService)) private toolService: ToolService
     ) {
     }
 
@@ -36,13 +36,13 @@ export class RentService {
             }
     }
 
-    removeWypozyczenie (indexZController: number): RemoveWypozyczenieResponse {
+    deleteRent (indexZController: number): RemoveWypozyczenieResponse {
         if(
             indexZController < 0 ||
             indexZController >= this.rentUserToolDoController.length
         ) {
-            console.log(this.removeWypozyczenie);
-            console.log('Lenghth',this.removeWypozyczenie.length);
+            console.log(this.deleteRent);
+            console.log('Lenghth',this.deleteRent.length);
             return {
                 isSuccess: false,
             }
@@ -53,5 +53,8 @@ export class RentService {
             isSuccess: true,
         }
     }
+
+  //  isUser (userName: string): boolean {
+
 
 }

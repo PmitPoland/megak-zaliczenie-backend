@@ -3,7 +3,7 @@ import {
     AddNewUserToBase1Response,
     PobierzListeUserowResponse,
     RegisterUserResponse,
-    RemoveUserFromBaseResponse
+    RemoveUserFromBaseResponse, User, UserListResponse
 } from "../interface/user";
 import {CreateUserDto} from "./dto/create-user.dto";
 import {UserService} from "./user.service";
@@ -35,9 +35,16 @@ export class UserController {
         return this.userService.addNewUser(newUser);   // to zwracamy
     }
 
-    @Get('list')
-    userList () {
+    @Get('/list')
+    userListOnBase ():UserListResponse {
        return this.userService.getUserList();
+    }
+
+    @Get('/user/:id')
+    getUserByName (
+        @Param('id') idUser: string
+    ): CreateUserDto[]{
+        return  this.userService.getUserById(idUser);
     }
 
     @Delete('/delete/:index')
@@ -47,10 +54,7 @@ export class UserController {
         return this.userService.removeUser(Number(index));
     }
 
-
-
-
-
+  
 
     // @Post ('/test-dodaj')
     // zrobNowegoUsera (
