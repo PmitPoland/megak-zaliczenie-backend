@@ -1,9 +1,6 @@
 import {forwardRef, Inject, Injectable} from '@nestjs/common';
 import {
-    AddNewUserToBase1Response,
-    RegisterUserResponse,
-    RemoveUserFromBaseResponse,
-    User,
+    AddNewUserToBase1Response, OneUser,
     UserListResponse
 } from "../interface/user";
 import {InjectRepository} from "@nestjs/typeorm";
@@ -27,66 +24,85 @@ export class UserService {
     ) {
     }
 
-    addNewUser(newUser): AddNewUserToBase1Response {
+    async addNewUser(newUser): Promise <AddNewUserToBase1Response> {
 
-        const {idUser, nameUser, phoneUser, emailUser} = newUser;
-
+        const { nameUser, phoneUser, emailUser, userCounterOfRent} = newUser;
         console.log('Nowy user z user.serwice',newUser);
         if (
-            typeof idUser !== 'string' ||
-            typeof nameUser !== 'string' ||
+           typeof nameUser !== 'string' ||
             typeof phoneUser !== 'string' ||
             typeof emailUser !== 'string' ||
-            idUser === '' ||
             nameUser === '' ||
-            phoneUser === '' ||
-            this.isUser(newUser.idUser)
+            phoneUser === ''  // ||
+            // this.isUser(newUser.idUser)
         ){
                 return {
                     isSuccess: false,
                 }
         }
+        // this.userService.push(newUser);  // metoda bez bazy danych tylko w powietrzu obsługa
 
-        this.userService.push(newUser);
+        await this.userEntityRepository.save(newUser);
+
         return {
             index: this.userService.length -1,
             isSuccess: true,
         }
     }
+//*********************
 
+    // Aktualizuje dane użytkownika
 
-    getUserList():UserListResponse {
-
-
-
-        return this.userService;
+    async getUserList(): Promise <UserListResponse> {
+        return await this.userEntityRepository.find();
     }
 
-    removeUser(index): RemoveUserFromBaseResponse {
-        if (
-            this.userService.length < 0 ||
-            index >= this.userService.length
-        ) {
-            // console.log('Typeoff Index', typeof (index));
-            // console.log('If nie this.Length z remove', this.toolList.length);
-            // console.log('If nie index z remove', index);
-            return {
-                isSuccess: false,
-            }
-        }
 
-        this.userService.splice(index, 1);
-        return {
-            isSuccess: true,
-        }
+    async removeUser(idUser) {
+        await this.userEntityRepository.delete(idUser);
     }
 
-     getUserById(idUserToFind: string) {
-         return this.userService.filter(item => item.idUser === idUserToFind)
+
+
+
+    // remove poniżej działało bardzo dobrze "w powietrzu" user o indeksie index
+    // removeUser(index): RemoveUserFromBaseResponse {
+    //     if (
+    //         this.userService.length < 0 ||
+    //         index >= this.userService.length
+    //     ) {
+    //           return {
+    //             isSuccess: false,
+    //         }
+    //     }
+    //
+    //     this.userService.splice(index, 1);
+    //     return {
+    //         isSuccess: true,
+    //     }
+    // }
+
+    async getUserById(idUser: string): Promise<OneUser> {
+        //const oneUser = await this.userEntityRepository.findOne({
+        const oneUser = await this.userEntityRepository.findOneOrFail({
+                where: {idUser}
+        });
+        // if (!oneUser) {
+        //     throw new Error('Brak id w bazie');
+        // }    //  obsługa błędów.
+        return oneUser;
     }
 
-    isUser (idUserFind: string): boolean {
-        return this.userService.some(item => item.idUser === idUserFind);
+
+   //  Przerobić np: na takie same nazwiska wyszukiwanie
+   //   async getUserById(idUserToFind: string): Promise<UserListResponse> {
+   // //      return await (this.userService).filter(item => item.idUser === idUserToFind)
+   //       return (this.userService).filter(item => item.idUser === idUserToFind);
+   //   }
+
+    async isUser (idUserFind: string): Promise <boolean> {
+   //     return   await (this.userService).some(item => item.idUser === idUserFind);
+        return (this.userService).some(item => item.idUser === idUserFind);
     }
 
 

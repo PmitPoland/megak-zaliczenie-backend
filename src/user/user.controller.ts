@@ -1,9 +1,6 @@
 import {Body, Controller, Get, Ip, Post, Headers, Redirect, Param, Inject, Delete, forwardRef} from '@nestjs/common';
 import {
-    AddNewUserToBase1Response,
-    PobierzListeUserowResponse,
-    RegisterUserResponse,
-    RemoveUserFromBaseResponse, User, UserListResponse
+    AddNewUserToBase1Response, OneUser, UserListResponse
 } from "../interface/user";
 import {CreateUserDto} from "./dto/create-user.dto";
 import {UserService} from "./user.service";
@@ -30,29 +27,47 @@ export class UserController {
     addUser (
         @Body() newUser     // tutaj definiujemy co to jest newUser !! POST/ @Body definiujemy
         //co będzie odbierane  będzie dodawany/twoorony
-    ): AddNewUserToBase1Response  {
+    ): Promise<AddNewUserToBase1Response>  {
 
         return this.userService.addNewUser(newUser);   // to zwracamy
     }
 
     @Get('/list')
-    userListOnBase ():UserListResponse {
+    userListOnBase (): Promise<UserListResponse> {
        return this.userService.getUserList();
     }
 
     @Get('/user/:id')
-    getUserByName (
-        @Param('id') idUser: string
-    ): CreateUserDto[]{
+    getUserById (
+        @Param('id') idUser: string,
+    ): Promise <OneUser>{
         return  this.userService.getUserById(idUser);
     }
 
-    @Delete('/delete/:index')
-    deleteUserFromList(
-        @Param('index') index: string,
-    ): RemoveUserFromBaseResponse {
-        return this.userService.removeUser(Number(index));
+    // @Get ('/update/:id')
+    // updateUser(
+    //     @Param('id') idUser: string,
+    // ) {
+    //     return this.userService.addUserRentTool(idUser);
+    // }
+
+    @Delete('/delete/:idUser')
+    removeUserFromList(
+        @Param('idUser') idUser: string,
+    ) {
+        return this.userService.removeUser(idUser);
     }
+
+
+
+
+    // remove poniżej działało bardzo dobrze "w powietrzu" user o indeksie index
+    // @Delete('/delete/:index')
+    // deleteUserFromList(
+    //     @Param('index') index: string,
+    // ): RemoveUserFromBaseResponse {
+    //     return this.userService.removeUser(Number(index));
+    // }
 
   
 

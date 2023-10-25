@@ -19,16 +19,11 @@ export type AddNewUserToBase1Response = {
 export type  RemoveUserFromBaseResponse = {
     isSuccess: boolean;
 }
-export interface  RegisterUserResponse {
-        nameUser: string,
-        phoneUser: string,
-        emailUser: string,
-    // te dane zwracam z UserControler podczas rejestracji, Id doda się sam
-}
+
 
 export type UserListResponse = CreateUserDto[];
 
-export type PobierzListeUserowResponse = CreateUserDto[];
+export type OneUser = CreateUserDto;
 
 
 

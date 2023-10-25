@@ -28,5 +28,11 @@ export class UserEntity  extends BaseEntity {
     })
     noteUser: string;
 
+    @Column({
+        type: "int",
+        precision: 4,
+        default: 0,
+    })
+    userCounterOfRent: number;
 
 }
