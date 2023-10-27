@@ -1,11 +1,8 @@
 import {forwardRef, Inject, Injectable} from '@nestjs/common';
-import {
-    AddNewUserToBase1Response, OneUser,
-    UserListResponse
-} from "../interface/user";
+import {AddNewUserToBase1Response, OneUser,UserListResponse} from "../interface/user";
 import {InjectRepository} from "@nestjs/typeorm";
 import {UserEntity} from "./user.entity";
-import {Repository, Like} from "typeorm";
+import {Repository} from "typeorm";
 import {CreateUserDto} from "./dto/create-user.dto";
 import {RentService} from "../rent/rent.service";
 
@@ -21,8 +18,7 @@ export class UserService {
     constructor(
         @InjectRepository(UserEntity) private userEntityRepository: Repository<UserEntity>,
         @Inject(forwardRef(() => RentService)) private rentService: RentService,
-    ) {
-    }
+    ) {}
 
     async addNewUser(newUser): Promise <AddNewUserToBase1Response> {
 
@@ -34,7 +30,7 @@ export class UserService {
             typeof emailUser !== 'string' ||
             nameUser === '' ||
             phoneUser === ''  // ||
-            // this.isUser(newUser.idUser)
+            // this.isUser(newUser.idUser) // todo dorobić walidację na unikalny telefon
         ){
                 return {
                     isSuccess: false,
@@ -50,8 +46,6 @@ export class UserService {
         }
     }
 //*********************
-
-    // Aktualizuje dane użytkownika
 
     async getUserList(): Promise <UserListResponse> {
         return await this.userEntityRepository.find();
@@ -83,15 +77,20 @@ export class UserService {
     // }
 
     async getUserById(idUser: string): Promise<OneUser> {
-        //const oneUser = await this.userEntityRepository.findOne({
+
         const oneUser = await this.userEntityRepository.findOneOrFail({
                 where: {idUser}
         });
-        // if (!oneUser) {
-        //     throw new Error('Brak id w bazie');
-        // }    //  obsługa błędów.
+        // console.log('Nie znalazło -- oneUser',oneUser );
+        // console.log('typeOf  oneUser',typeof (oneUser) );
+
+        if (!oneUser) {
+            throw new Error('Brak id w bazie');
+        }    //  obsługa błędów.
         return oneUser;
     }
+
+
 
 
    //  Przerobić np: na takie same nazwiska wyszukiwanie

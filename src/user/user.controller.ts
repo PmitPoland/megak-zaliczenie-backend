@@ -2,9 +2,7 @@ import {Body, Controller, Get, Ip, Post, Headers, Redirect, Param, Inject, Delet
 import {
     AddNewUserToBase1Response, OneUser, UserListResponse
 } from "../interface/user";
-import {CreateUserDto} from "./dto/create-user.dto";
 import {UserService} from "./user.service";
-import {UserEntity} from "./user.entity";
 
 // Controler powinien tylko przyjmować dane i odsyłać ,obsługą tych danych powinne zajmować się servisy
 // Każdy Controller ma przynajmniej jeden serwis
@@ -15,8 +13,7 @@ export class UserController {
 
     constructor(  // wszędzie pod nazwą userService będzie nasz UserService
         @Inject(forwardRef(() => UserService)) private userService: UserService
-    ) {
-    }
+    ) {}
 
     @Get('/')
     stronaGlowna ():string {
@@ -50,6 +47,14 @@ export class UserController {
     // ) {
     //     return this.userService.addUserRentTool(idUser);
     // }
+
+    // @Get('/user/:id')
+    // getUserById (
+    //     @Param('id') idUser: string,
+    // ): Promise <OneUser>{
+    //     return  this.userService.getUserById(idUser);
+    // }
+
 
     @Delete('/delete/:idUser')
     removeUserFromList(

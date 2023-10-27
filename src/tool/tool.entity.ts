@@ -17,8 +17,17 @@ export class ToolEntity extends BaseEntity {
     })
     depositTool: number;
 
-    @Column()
+    @Column({
+        default: true,
+    })
     availabilityTool: boolean;
+
+    @Column({
+        type: "int",
+        precision: 5,
+        default: 0,
+    })
+    toolCounterRent: number;
 
     // @Column()
     // dataZakupu: Date;

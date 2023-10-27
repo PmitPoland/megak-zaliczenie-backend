@@ -1,7 +1,7 @@
 import {Body, Controller, Delete, forwardRef, Get, Inject, Param, Post} from '@nestjs/common';
-import {NewRentDto} from "./dto/new-rent.dto";
+import {rentService} from "./dto/rent.service";
 import {RentService} from "./rent.service";
-import {RemoveWypozyczenieResponse} from "../interface/rent";
+import {AddNewRent, RemoveWypozyczenieResponse} from "../interface/rent";
 
 @Controller('rent')
 export class RentController {
@@ -12,10 +12,10 @@ export class RentController {
 
     @Post('/add')
     noweWypozyczenie(
-        @Body() rentUserToolWController: NewRentDto,   // Dzięki Body możemy odbierać dane
+        @Body() addNewRent: AddNewRent   // Dzięki Body możemy odbierać dane
     ) {
         console.log('Z rent Controler',this.rentService)
-        return this.rentService.addNoweWypozyczenie(rentUserToolWController);
+        return this.rentService.addNoweWypozyczenie(addNewRent);
     }
 
     @Delete('/delete/:index')
@@ -33,5 +33,13 @@ export class RentController {
         console.log('Cała tablica',this.rentService);
         return this.rentService;
     }
+
+    @Post('/returntool/:idRent')
+    returnTool (
+        @Param('idRent') idRent: string,
+    ){
+
+        return this.rentService.returnToolToRental(idRent);
+}
 
 }

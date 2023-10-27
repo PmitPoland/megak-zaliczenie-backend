@@ -1,6 +1,7 @@
 import {Body, Controller, Delete, forwardRef, Get, Inject, Param, Post} from '@nestjs/common';
 import {ToolService} from "./tool.service";
-import {AddToolToBase, GetCautionResponse, ListToolResponse, RemoveToolResponse} from "../interface/tool";
+import {AddToolToBase, GetCautionResponse, ListToolResponse, RemoveToolResponse, ToolType} from "../interface/tool";
+import {CreateToolDto} from "./dto/create-tool.dto";
 
 
 // Controler powinien tylko przyjmować dane i odsyłać ,obsługą tych danych powinne zajmować się servisy
@@ -27,17 +28,27 @@ export class ToolController {
     }
 
     @Get('/list')
-    listTool(): ListToolResponse {
-        console.log('Cała tablica',this.toolService);
+    listTool(): Promise <ListToolResponse> {
+        //console.log('Cała tablica',this.toolService);
         return this.toolService.getToolList();
     }
 
-    @Delete ('/delete/:index')
+    @Delete ('/delete/:idUser')
     deleteToolFromList (
-        @Param('index') index: string,
-    ): RemoveToolResponse{
-        return this.toolService.removeTool(Number(index));
+        @Param('idUser') idUser: string,
+    ){
+        return this.toolService.removeTool(idUser);
     }
+
+    @Get('/id/:idtool')
+    getToolById(
+        @Param('idtool') idToolToAsk: string,
+    ): Promise<ToolType>{
+        return this.toolService.getToolById(idToolToAsk)
+    }
+
+
+
 
     @Get('/caution/:idtool')
     getCaution(

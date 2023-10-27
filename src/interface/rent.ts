@@ -4,6 +4,11 @@ export interface AddRentToolToBase {
     index?: number;
 }
 
+export type AddNewRent = {
+    idUser: string;
+    idTool: string;
+}
+
 export type AddRentToolToBase1Response = {
     isSuccess: true;
     index: number;
