@@ -1,4 +1,5 @@
-import {BaseEntity, Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import {RentEntity} from "../rent/rent.entity";
 
 @Entity()
 export class ToolEntity extends BaseEntity {
@@ -42,4 +43,9 @@ export class ToolEntity extends BaseEntity {
     // @Column()
     // stopienZuzycia: string;
     //
+
+    @OneToOne( type  => RentEntity)
+    @JoinColumn()
+    toolId: RentEntity;
+
 }

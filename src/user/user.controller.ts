@@ -48,12 +48,12 @@ export class UserController {
     //     return this.userService.addUserRentTool(idUser);
     // }
 
-    // @Get('/user/:id')
-    // getUserById (
-    //     @Param('id') idUser: string,
-    // ): Promise <OneUser>{
-    //     return  this.userService.getUserById(idUser);
-    // }
+    @Get('/data/:data')    // wyszukiwanie w Nazwie i Telefonie
+    userByData (
+        @Param('data') data: string,
+    ){
+        return  this.userService.getUserByData(data);
+    }
 
 
     @Delete('/delete/:idUser')

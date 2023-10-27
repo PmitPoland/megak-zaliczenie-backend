@@ -1,5 +1,5 @@
 import {forwardRef, Inject, Injectable} from '@nestjs/common';
-import {rentService} from "./dto/rent.service";
+import {rentServiceDto} from "./dto/rent.service.dto";
 import {AddNewRent, AddRentToolToBase1Response, RemoveWypozyczenieResponse} from "../interface/rent";
 import {UserService} from "../user/user.service";
 import {ToolService} from "../tool/tool.service";
@@ -10,11 +10,12 @@ import {ToolEntity} from "../tool/tool.entity";
 import {UserEntity} from "../user/user.entity";
 import {CreateUserDto} from "../user/dto/create-user.dto";
 import {CreateToolDto} from "../tool/dto/create-tool.dto";
+import {UserListResponse} from "../interface/user";
 
 
 @Injectable()
 export class RentService {
-    private rentService: rentService[] = [];
+    private rentService: rentServiceDto[] = [];
 
     constructor(
         @Inject(forwardRef(() => UserService)) private userService: UserService,
@@ -118,7 +119,10 @@ export class RentService {
         }
     }
 
+
+
   //  isUser (userName: string): boolean {
+
 
 
 }

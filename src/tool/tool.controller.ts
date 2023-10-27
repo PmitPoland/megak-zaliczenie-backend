@@ -33,6 +33,12 @@ export class ToolController {
         return this.toolService.getToolList();
     }
 
+    @Get('/borrowedList')
+    listBorrowedTool(): Promise <ListToolResponse> {
+        return this.toolService.getBorrowedTool();
+    }
+
+
     @Delete ('/delete/:idUser')
     deleteToolFromList (
         @Param('idUser') idUser: string,
@@ -47,6 +53,12 @@ export class ToolController {
         return this.toolService.getToolById(idToolToAsk)
     }
 
+    @Get('/name/:data')
+    getToolByName(
+        @Param('data') data: string,
+    ):Promise<ListToolResponse>{
+        return this.toolService.findToolByName(data)
+    }
 
 
 

@@ -1,7 +1,8 @@
 import {Body, Controller, Delete, forwardRef, Get, Inject, Param, Post} from '@nestjs/common';
-import {rentService} from "./dto/rent.service";
+import {rentServiceDto} from "./dto/rent.service.dto";
 import {RentService} from "./rent.service";
 import {AddNewRent, RemoveWypozyczenieResponse} from "../interface/rent";
+import {ListToolResponse} from "../interface/tool";
 
 @Controller('rent')
 export class RentController {
@@ -17,6 +18,8 @@ export class RentController {
         console.log('Z rent Controler',this.rentService)
         return this.rentService.addNoweWypozyczenie(addNewRent);
     }
+
+
 
     @Delete('/delete/:index')
     removeWWypozyczenie(
@@ -34,12 +37,15 @@ export class RentController {
         return this.rentService;
     }
 
+
+
     @Post('/returntool/:idRent')
     returnTool (
         @Param('idRent') idRent: string,
     ){
 
         return this.rentService.returnToolToRental(idRent);
-}
+    }
+
 
 }

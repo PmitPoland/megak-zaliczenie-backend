@@ -48,7 +48,12 @@ export class UserService {
 //*********************
 
     async getUserList(): Promise <UserListResponse> {
-        return await this.userEntityRepository.find();
+        return await this.userEntityRepository.find(
+        //     {
+        //     order: { nameUser: 'ASC'
+        //          phoneUse: 'DESC}     // sortowanie listy ASC / DSC
+        // }
+        );
     }
 
 
@@ -90,6 +95,13 @@ export class UserService {
         return oneUser;
     }
 
+    async getUserByData (data: string): Promise<UserListResponse> {
+
+        return await this.userEntityRepository.find({
+            where: [{nameUser: data},                       // OR
+                    {phoneUser: data, emailUser: data},]   // i AND
+        });
+    }
 
 
 

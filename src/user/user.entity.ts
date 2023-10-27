@@ -1,4 +1,5 @@
-import {BaseEntity, Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import {RentEntity} from "../rent/rent.entity";
 
 @Entity()
 export class UserEntity  extends BaseEntity {
@@ -34,5 +35,9 @@ export class UserEntity  extends BaseEntity {
         default: 0,
     })
     userCounterOfRent: number;
+
+    @OneToOne(type => RentEntity)
+    userId: RentEntity;
+
 
 }

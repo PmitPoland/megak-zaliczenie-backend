@@ -1,4 +1,4 @@
-export class rentService {
+export class rentServiceDto {
     idTool: string;
     idUser: string;
 }

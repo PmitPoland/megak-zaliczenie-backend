@@ -62,8 +62,20 @@ export class ToolService {
 
         return oneTool;
         // return await this.toolEntityRepository.find(idTool); znajduje wszystkie 4 w iD
-
     }
+
+    async findToolByName(askData): Promise<ListToolResponse> {
+        return await this.toolEntityRepository.find({
+            where: {nameTool:askData}
+        })
+    }
+
+    async getBorrowedTool() {
+        return await this.toolEntityRepository.find({
+            where: {availabilityTool: false}
+        })
+    }
+
 
     // V5 działa
     async removeTool(idUser: string) {
@@ -74,6 +86,9 @@ export class ToolService {
         return this.toolList.some(item => item.idTool === idToolFind);
     }
 
+    getRentOverTime(){
+
+    }
 
     // async counterRentTool(idtool: string){
     //     const tool = await this.toolEntityRepository.findOne(idtool);

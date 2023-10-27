@@ -1,22 +1,17 @@
-import {BaseEntity,
+import {
+    BaseEntity,
     Column,
     Entity,
     JoinColumn,
-    ManyToOne,
+    ManyToOne, OneToOne,
     PrimaryGeneratedColumn,
-    UpdateDateColumn} from "typeorm";
+    UpdateDateColumn
+} from "typeorm";
 import {UserEntity} from "../user/user.entity";
+import {ToolEntity} from "../tool/tool.entity";
 
 @Entity()
 export class RentEntity extends BaseEntity {
-
-    // @ManyToOne(() => UserEntity, klient => klient.wypozyczenia)
-    // @JoinColumn({ name: 'klientId' })
-    // klient: Klient;
-    //
-    // @ManyToOne(() => Narzedzie, narzedzie => narzedzie.wypozyczenia)
-    // @JoinColumn({ name: 'narzedzieId' })
-    // narzedzie: Narzedzie;
 
     @PrimaryGeneratedColumn('uuid')
     idRent: string;
@@ -36,13 +31,13 @@ export class RentEntity extends BaseEntity {
     dataZwrotu: Date;
 
 
-    // @Column(
-    //     {
-    //         type: 'int',
-    //         precision: 3,
-    //     }
-    // )
-    // iloscDni: number;
+    @Column(
+        {
+            type: 'int',
+            precision: 3,
+        }
+    )
+    iloscDni: number;
     //
     // @Column()
     // kaucjaZaplacona: boolean;
@@ -56,4 +51,14 @@ export class RentEntity extends BaseEntity {
     //
     // @Column()
     // narzedzieSprawne: boolean;
+
+    @OneToOne(type => UserEntity)
+    @JoinColumn()      // { name: 'klientId' }
+    userId: UserEntity;
+
+    @OneToOne( type  => ToolEntity)
+    @JoinColumn()
+    toolId: ToolEntity;
+
+
 }
