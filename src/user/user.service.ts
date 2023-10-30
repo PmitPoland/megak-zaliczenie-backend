@@ -11,7 +11,7 @@ import {RentService} from "../rent/rent.service";
 
 @Injectable()       // Injectable czyli można gdzieś go wstrzykiwać
 export class UserService {
-    private userService: CreateUserDto[] = [];
+    private userService: CreateUserDto[] = [];   // todo D15 (41:00) - refaktoryzacja
 
 
 
@@ -40,9 +40,12 @@ export class UserService {
 
         await this.userEntityRepository.save(newUser);
 
+        console.log('**** newUser.id',  newUser.idUser);
+
         return {
-            index: this.userService.length -1,
+            //index: this.userService.length -1,
             isSuccess: true,
+            id: newUser.idUser ,
         }
     }
 //*********************
@@ -98,8 +101,9 @@ export class UserService {
     async getUserByData (data: string): Promise<UserListResponse> {
 
         return await this.userEntityRepository.find({
-            where: [{nameUser: data},                       // OR
+            where: [{nameUser: data},                       // OR  // nameUser: Like(`%${data}%`),
                     {phoneUser: data, emailUser: data},]   // i AND
+
         });
     }
 
@@ -125,5 +129,8 @@ export class UserService {
     // sprawdzanie czy jest produkt o danym id / nazwie w wypożyczalni
 
     user_dane
+
+
+
 
 }

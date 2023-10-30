@@ -11,7 +11,8 @@ export type User = CreateUserDto
 
 export type AddNewUserToBase1Response = {
     isSuccess: true;
-    index: number;
+    id: string;
+  //  index: number;
 }  | {
     isSuccess: false;
 }// w tym type w zależności co jest zmienia się "zawartość" typu

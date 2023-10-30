@@ -7,6 +7,7 @@ export interface AddRentToolToBase {
 export type AddNewRent = {
     idUser: string;
     idTool: string;
+    rentalActive?: boolean;
 }
 
 export type AddRentToolToBase1Response = {

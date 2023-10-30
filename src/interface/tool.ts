@@ -10,7 +10,8 @@ export type AddToolToBase = CreateToolDto;
 
 export type AddNewToolToBase1Response = {
     isSuccess: true;
-    index: number;
+    id: string;
+//    index: number;
 }  | {
     isSuccess: false;
 }

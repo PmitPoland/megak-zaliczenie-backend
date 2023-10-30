@@ -37,8 +37,9 @@ export class ToolService {
 
        await this.toolEntityRepository.save(newTool);
         return {
-            index: this.toolList.length -1,
+            // index: this.toolList.length -1,  // to
             isSuccess: true,
+            id: newTool.idTool,
         }
     }
 

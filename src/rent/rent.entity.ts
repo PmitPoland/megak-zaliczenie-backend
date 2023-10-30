@@ -3,7 +3,7 @@ import {
     Column,
     Entity,
     JoinColumn,
-    ManyToOne, OneToOne,
+    ManyToOne, OneToMany, OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
@@ -35,12 +35,17 @@ export class RentEntity extends BaseEntity {
         {
             type: 'int',
             precision: 3,
+            default: 1,
         }
     )
     iloscDni: number;
     //
-    // @Column()
-    // kaucjaZaplacona: boolean;
+    @Column(
+        {
+            default: true,
+        }
+    )
+    rentalActive: boolean;
     //
     // @Column({
     //     type: 'float',
@@ -52,13 +57,11 @@ export class RentEntity extends BaseEntity {
     // @Column()
     // narzedzieSprawne: boolean;
 
-    @OneToOne(type => UserEntity)
-    @JoinColumn()      // { name: 'klientId' }
-    userId: UserEntity;
-
-    @OneToOne( type  => ToolEntity)
-    @JoinColumn()
-    toolId: ToolEntity;
-
-
+    @ManyToOne(type => UserEntity, user => user.rents)
+    @JoinColumn({ name: 'idUser' })
+    user: UserEntity;
+    //
+    @ManyToOne(type => ToolEntity, tool => tool.rents)
+    @JoinColumn({ name: 'idTool' })
+    tool: ToolEntity;
 }

@@ -1,4 +1,4 @@
-import {BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import {BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import {RentEntity} from "../rent/rent.entity";
 
 @Entity()
@@ -44,8 +44,14 @@ export class ToolEntity extends BaseEntity {
     // stopienZuzycia: string;
     //
 
-    @OneToOne( type  => RentEntity)
-    @JoinColumn()
-    toolId: RentEntity;
+    @OneToMany(type => RentEntity, rent => rent.idTool)
+    @JoinColumn({ name: 'idTool' })
+    rents: RentEntity[];
+
+
+
+    // @OneToMany( type  => RentEntity, entity => entity.toolId)
+    // @JoinColumn()
+    // toolId: RentEntity;
 
 }

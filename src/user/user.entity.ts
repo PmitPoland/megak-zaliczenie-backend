@@ -1,4 +1,4 @@
-import {BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import {BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import {RentEntity} from "../rent/rent.entity";
 
 @Entity()
@@ -36,8 +36,8 @@ export class UserEntity  extends BaseEntity {
     })
     userCounterOfRent: number;
 
-    @OneToOne(type => RentEntity)
-    userId: RentEntity;
-
+    @OneToMany(type => RentEntity, rent => rent.idUser)
+    @JoinColumn({ name: 'idUser' })
+    rents: RentEntity[];
 
 }

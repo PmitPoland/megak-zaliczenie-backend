@@ -37,7 +37,11 @@ export class RentController {
         return this.rentService;
     }
 
-
+    @Get('/rentlist')
+    listRent_Relation(){                    // todo zmienić nazwę
+        console.log('Cała tablica',this.rentService);
+        return this.rentService.getListRent();
+    }
 
     @Post('/returntool/:idRent')
     returnTool (
@@ -45,6 +49,24 @@ export class RentController {
     ){
 
         return this.rentService.returnToolToRental(idRent);
+    }
+
+    @Get('/userrent/:userId')
+    listUserRent
+    (
+        @Param('userId') userId: string,
+    ){
+
+        return this.rentService.getListUserRent(userId);
+    }
+
+    @Get('/activeuserrent/:userId')
+    listActiveUserRent
+    (
+        @Param('userId') userId: string,
+    ){
+
+        return this.rentService.getListActiveUserRent(userId);
     }
 
 

@@ -4,13 +4,14 @@ import {AddNewRent, AddRentToolToBase1Response, RemoveWypozyczenieResponse} from
 import {UserService} from "../user/user.service";
 import {ToolService} from "../tool/tool.service";
 import {InjectRepository} from "@nestjs/typeorm";
-import {Repository} from "typeorm";
+import {IsNull, LessThan, Not, Repository} from "typeorm";
 import {RentEntity} from "./rent.entity";
 import {ToolEntity} from "../tool/tool.entity";
 import {UserEntity} from "../user/user.entity";
 import {CreateUserDto} from "../user/dto/create-user.dto";
 import {CreateToolDto} from "../tool/dto/create-tool.dto";
 import {UserListResponse} from "../interface/user";
+import {not} from "rxjs/internal/util/not";
 
 
 @Injectable()
@@ -59,8 +60,11 @@ export class RentService {
         }
 
         await ToolEntity.update(tool, {
-            availabilityTool: false,
+            availabilityTool: true,
         });
+
+
+        // rentToUpdate.rentalActive = false;
 
         await this.rentEntityRepository.save(addNewRent);
 
@@ -72,34 +76,33 @@ export class RentService {
     }
 //*******************
 
-    async returnToolToRental(idRent){
+    async returnToolToRental(idRent){    // Oddaję urządzenie
 
        console.log('--- - -- Rent oddaję - - - - ')
        const rentToUpdate = await this.rentEntityRepository.findOne({
            where: {idRent}
+       });
+       const idTool = rentToUpdate.idTool;
+       const tool: CreateToolDto = await ToolEntity.findOne({
+            where: {idTool}
        });
 
         console.log(' --------------',rentToUpdate);
         if (rentToUpdate) {
             const newReturnDate = new Date();
             rentToUpdate.dataZwrotu = newReturnDate;
+            rentToUpdate.rentalActive = false;
 
-            await ToolEntity.update(rentToUpdate.idTool, {
+            await ToolEntity.update(tool, {
                 availabilityTool: true,
             });
+
             await rentToUpdate.save();
         } else {
             throw new Error('Nie znaleziono wypożyczenia o podanym ID.');
         }
         console.log('zaktualizowane')
     }
-
-    // async returnToolToRental(rentId){
-        // this.rentEntityRepository.update(rentId, {
-        //     dataZwrotu: "2023-10-26"
-        //
-        // })
-    // }
 
     deleteRent (indexZController: number): RemoveWypozyczenieResponse {
         if(
@@ -120,8 +123,41 @@ export class RentService {
     }
 
 
+    async getListRent() {
+        return  await RentEntity.find({
+            relations: ['tool'],  // pobieranie relacji
+        })
+    }
 
-  //  isUser (userName: string): boolean {
+    async getListUserRent(idUser) {
+
+        // const userRent = await this.rentEntityRepository.findOne({
+        //     where: {idUser}
+        // });
+            return  await RentEntity.find({
+            where: {idUser}
+        })
+    }
+
+
+    async getListActiveUserRent(idUser) {
+
+
+        // const userRent = await this.rentEntityRepository.findOne({
+        //     where: [{idUser},{drugi warunek}]
+        // });
+        //
+
+        return  await RentEntity.find({
+            // where: [{idUser}, {dataZwrotu: oddane}]   // pobieranie relacji
+            where: {
+                idUser: idUser,
+                rentalActive: true,
+            }
+        })
+    }
+
+    //  isUser (userName: string): boolean {
 
 
 
