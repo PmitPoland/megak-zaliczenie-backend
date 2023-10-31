@@ -123,9 +123,9 @@ export class RentService {
     }
 
 
-    async getListRent() {
+    async getListRent() {           // #todo np dla admina !!!!
         return  await RentEntity.find({
-            relations: ['tool'],  // pobieranie relacji
+            relations: ['tool', 'user'],  // pobieranie relacji
         })
     }
 
